@@ -34,7 +34,7 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->alias('dompdf', 'DOMPDF');
 
         $this->app->bind('dompdf.wrapper', function ($app) {
-            return new PDF($app['dompdf'], $app['config'], $app['files'], $app['view']);
+            return new PDF($app['dompdf'], $app['config'], $app['view']);
         });
 
     }
