@@ -3,7 +3,7 @@ namespace Barryvdh\DomPDF;
 
 use DOMPDF;
 use Exception;
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\Factory as ViewFactory;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Http\Response;
@@ -22,9 +22,6 @@ class PDF{
     /** @var \Illuminate\Contracts\Config\Repository  */
     protected $config;
 
-    /** @var \Illuminate\Filesystem\Filesystem  */
-    protected $files;
-
     /** @var \Illuminate\Contracts\View\Factory  */
     protected $view;
 
@@ -40,10 +37,9 @@ class PDF{
      * @param \Illuminate\Filesystem\Filesystem $files
      * @param \Illuminate\View\Factory $view
      */
-    public function __construct(DOMPDF $dompdf, ConfigRepository $config, Filesystem $files, ViewFactory $view){
+    public function __construct(DOMPDF $dompdf, ConfigRepository $config, ViewFactory $view){
         $this->dompdf = $dompdf;
         $this->config = $config;
-        $this->files = $files;
         $this->view = $view;
 
         $this->showWarnings = $this->config->get('dompdf.show_warnings', false);
@@ -163,7 +159,7 @@ class PDF{
      * @return static
      */
     public function save($filename){
-        $this->files->put($filename, $this->output());
+        Storage::put($filename, $this->output());
         return $this;
     }
 
